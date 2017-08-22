@@ -126,12 +126,12 @@ str2rgb <- function(x, alpha = NULL) {
 #' gradient(c(5,4,3,2,1), "white", "red")
 #' gradient(c(1,3,2,4,5), "white", "red")
 #' gradient(c(1,3,2,4,5), rgb(0,0,0,0.5), rgb(0,0,0,1), alpha = TRUE)
-gradient <- function(x, min.color, max.color, alpha = NULL, use.names = TRUE, na.rm = TRUE) {
+gradient <- function(x, min.color, max.color, alpha = NULL, use.names = TRUE, na.rm = TRUE, xmin = FALSE, xmax = FALSE) {
   if (!is.numeric(x)) stop("x should be numeric")
   x <- unclass(x)
   color_range <- str2rgb(c(min = min.color, max = max.color), alpha = alpha)
   res <- if (length(x) > 0L) (color_range[, "max", drop = FALSE] -
-      color_range[, "min", drop = FALSE]) %*% normalize(x, na.rm = na.rm) +
+      color_range[, "min", drop = FALSE]) %*% normalize(x, na.rm = na.rm, xmin = xmin, xmax = xmax) +
     matrix(rep(color_range[, "min", drop = FALSE], length(x)), ncol = length(x))
   else str2rgb(x, alpha = alpha)
   storage.mode(res) <- "integer"
